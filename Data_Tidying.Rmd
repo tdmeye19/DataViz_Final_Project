@@ -1,0 +1,100 @@
+---
+title: "Data_Tidying"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url <- "https://www.espn.com/soccer/table/_/league/usa.1"
+
+## convert the html code into something R can read
+h <- read_html(url)
+
+## grabs the tables
+tab <- h %>% html_nodes("table")
+
+test1 <- tab[[1]] %>% html_table()
+test2 <- tab[[2]] %>% html_table()
+
+statsfull <- bind_cols(test1, test2)
+
+test1 <- test1 %>% slice(-1, -15)
+
+statsfull <- statsfull %>% rename("club" = X1...1, "GP" = X1...2, 
+                                      "Wins" = X2 , "Draws" = X3 ,
+                                      "Losses" = X4 , "Goals For" = X5,
+                                      "Goals Against" = X6, "Goal Differential" = X7,
+                                      "Points" =  X8)
+
+statsfull <- statsfull %>% slice(-1, -16)
+
+statsfull <- statsfull %>% arrange(desc(Points))
+
+statsfull <- statsfull %>% 
+  mutate(Seed = parse_number(club)) %>%
+  mutate(newclub = str_remove(club, pattern = "[[:digit:]]+"))
+
+statsfull <- statsfull %>% 
+  mutate(newclub2 = fct_recode(newclub, 
+                               `New England Revolution` = "NENew England Revolution",
+                               `Seattle Sounders FC` = "SEASeattle Sounders FC",
+                               `Sporting Kansas City` = "SKCSporting Kansas City",
+                               `Colorado Rapids` = "COLColorado Rapids",
+                               `Philadelphia Union` = "PHIPhiladelphia Union",
+                               `Nashville SC` = "NSHNashville SC",
+                               `New York City FC` = "NYCNew York City FC",
+                               `Portland Timbers` = "PORPortland Timbers",
+                               `Orlando City SC` = "ORLOrlando City SC",
+                               `Minnesota United FC` = "MINMinnesota United FC",
+                               `Atlanta United FC` = "ATLAtlanta United FC",
+                               `Los Angeles Galaxy` = "LALA Galaxy",
+                               `Vancouver Whitecaps FC` = "VANVancouver Whitecaps",
+                               `New York Red Bulls` = "NYNew York Red Bulls",
+                               `Real Salt Lake City` = "RSLReal Salt Lake",
+                               `D.C. United` = "DCD.C. United",
+                               `Columbus Crew` = "CLBColumbus Crew",
+                               `Los Angeles FC` = "LAFCLAFC",
+                               `Club de Foot Montréal` = "MTLCF Montréal",
+                               `San Jose Earthquakes` = "SJSan Jose Earthquakes",
+                               `Inter Miami CF` = "MIAInter Miami CF",
+                               `Chicago Fire FC` = "CHIChicago Fire FC",
+                               `FC Dallas` = "DALFC Dallas",
+                               `Houston Dynamo FC` = "HOUHouston Dynamo FC",
+                               `Toronto FC` = "TORToronto FC",
+                               `Austin FC` = "ATXAustin FC",
+                               `FC Cincinnati` = "CINFC Cincinnati",
+                               `Charlotte FC` = "CLTCharlotte FC"))
+
+statsfull <- statsfull %>% select(-club, -newclub)
+
+statsfull <- statsfull %>% select(Seed, newclub2, Points, GP, everything())
+
+statsfull$Points
+
+statsfull <- statsfull %>% mutate(Points = as.numeric(Points))
+
+statsfull <- statsfull %>% arrange(desc(Points))
+```
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url2 <- "https://www.espn.com/soccer/stats/_/league/usa.1"
+
+## convert the html code into something R can read
+h2 <- read_html(url2)
+
+## grabs the tables
+gatab <- h2 %>% html_nodes("table")
+
+goal_leaders <- gatab[[1]] %>% html_table()
+assist_leaders <- gatab[[2]] %>% html_table()
+```
+
