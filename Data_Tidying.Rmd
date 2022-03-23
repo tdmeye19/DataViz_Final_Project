@@ -53,14 +53,14 @@ statsfull <- statsfull %>%
                                `Orlando City SC` = "ORLOrlando City SC",
                                `Minnesota United FC` = "MINMinnesota United FC",
                                `Atlanta United FC` = "ATLAtlanta United FC",
-                               `Los Angeles Galaxy` = "LALA Galaxy",
-                               `Vancouver Whitecaps FC` = "VANVancouver Whitecaps",
+                               `LA Galaxy` = "LALA Galaxy",
+                               `Vancouver Whitecaps` = "VANVancouver Whitecaps",
                                `New York Red Bulls` = "NYNew York Red Bulls",
-                               `Real Salt Lake City` = "RSLReal Salt Lake",
+                               `Real Salt Lake` = "RSLReal Salt Lake",
                                `D.C. United` = "DCD.C. United",
                                `Columbus Crew` = "CLBColumbus Crew",
-                               `Los Angeles FC` = "LAFCLAFC",
-                               `Club de Foot Montréal` = "MTLCF Montréal",
+                               `LAFC` = "LAFCLAFC",
+                               `CF Montréal` = "MTLCF Montréal",
                                `San Jose Earthquakes` = "SJSan Jose Earthquakes",
                                `Inter Miami CF` = "MIAInter Miami CF",
                                `Chicago Fire FC` = "CHIChicago Fire FC",
@@ -127,10 +127,10 @@ assist_leaders <- assist_leaders %>%
          "GP" = P,
          "Assists" = A)
 
-na.locf(assist_leaders$Rank)
+tibble(Rank = c(1, NA, NA, NA, 5, NA, NA, NA))
 
-na.locf(goal_leaders$Rank)
+assist_leaders <- assist_leaders %>% mutate(newrank = na.locf(Rank))
 
-
+goal_leaders <- goal_leaders %>% mutate(newrank = na.locf(Rank))
 ```
 
