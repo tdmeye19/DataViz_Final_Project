@@ -77,9 +77,25 @@ statsfull <- statsfull %>% select(Seed, newclub2, Points, GP, everything())
 
 statsfull$Points
 
-statsfull <- statsfull %>% mutate(Points = as.numeric(Points))
+statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
+                                  `Goal Differential` = as.numeric(`Goal Differential`),
+                                  GP = as.numeric(GP),
+                                  Wins = as.numeric(Wins),
+                                  Draws = as.numeric(Draws),
+                                  Losses = as.numeric(Losses),
+                                  `Goals For` = as.numeric(`Goals For`),
+                                  `Goals Against` = as.numeric(`Goals Against`)) 
 
-statsfull <- statsfull %>% arrange(desc(Points))
+statsfull <- statsfull %>% arrange(desc(Points)) %>%
+  mutate(newclub2 = fct_reorder(newclub2, Points)) 
+
+ggplot(data = statsfull, aes(x = newclub2, y = Points)) +
+  geom_point() +
+  coord_flip()
+
+ggplot(data = statsfull, aes(x = newclub2, y = `Goal Differential`)) +
+  geom_point() +
+  coord_flip()
 ```
 
 ```{r}
@@ -96,5 +112,25 @@ gatab <- h2 %>% html_nodes("table")
 
 goal_leaders <- gatab[[1]] %>% html_table()
 assist_leaders <- gatab[[2]] %>% html_table()
+
+goal_leaders <- goal_leaders %>%
+  rename("Rank" = RK,
+         "Player" = Name,
+         "Club" = Team,
+         "GP" = P,
+         "Goals" = G)
+
+assist_leaders <- assist_leaders %>%
+  rename("Rank" = RK,
+         "Player" = Name,
+         "Club" = Team,
+         "GP" = P,
+         "Assists" = A)
+
+na.locf(assist_leaders$Rank)
+
+na.locf(goal_leaders$Rank)
+
+
 ```
 
