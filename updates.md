@@ -10,3 +10,6 @@ I created some plots using the statsfull, changed the statistic variables to num
 
 I fixed the rank variable, and created my Shiny app. I had to figure out how to put tabs, and then how to add output to each tab. I also had to check to make sure that the club variables in all the data sets were named the same so that the input will go between tabs correctly.
 
+## March 28 Beginning of Class
+
+Over the weekend I included conferences, and added the team value data set, which I have yet to put into a tab on the app. I had trouble figuring out how to have someone see the conference table only.
