@@ -13,3 +13,7 @@ I fixed the rank variable, and created my Shiny app. I had to figure out how to 
 ## March 28 Beginning of Class
 
 Over the weekend I included conferences, and added the team value data set, which I have yet to put into a tab on the app. I had trouble figuring out how to have someone see the conference table only.
+
+## March 28 End of Class
+
+I am working on trying to have one input affect the values of the other input. I want the user to be able to select a conference, and then the next input is the clubs, but only from the conference they input. I tried adding another tab for values, but got stuck messing with the club/conference inputs.

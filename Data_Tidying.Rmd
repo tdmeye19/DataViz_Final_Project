@@ -89,6 +89,12 @@ statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
   mutate(newclub2 = fct_reorder(newclub2, Points)) 
 
+statsfull <- statsfull %>% mutate(Conference = conference) 
+  
+statsfull <- statsfull %>% mutate(Conference = if_else(Conference == 0,
+                                            true = "East",
+                                            false = "West"))
+
 ggplot(data = statsfull, aes(x = newclub2, y = Points)) +
   geom_point() +
   coord_flip()
@@ -96,6 +102,9 @@ ggplot(data = statsfull, aes(x = newclub2, y = Points)) +
 ggplot(data = statsfull, aes(x = newclub2, y = `Goal Differential`)) +
   geom_point() +
   coord_flip()
+
+ggplot(data = statsfull, aes(x = Conference, y = Points)) +
+  geom_boxplot()
 ```
 
 ```{r}
@@ -132,5 +141,34 @@ tibble(Rank = c(1, NA, NA, NA, 5, NA, NA, NA))
 assist_leaders <- assist_leaders %>% mutate(newrank = na.locf(Rank))
 
 goal_leaders <- goal_leaders %>% mutate(newrank = na.locf(Rank))
+```
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url3 <- "https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1/plus/?stichtag=2021-03-15"
+
+## convert the html code into something R can read
+h3 <- read_html(url3)
+
+## grabs the tables
+valuetab <- h3 %>% html_nodes("table")
+
+valuetest <- valuetab[[1]] %>% html_table()
+valuetest2 <- valuetab[[2]] %>% html_table()
+valuetest3 <- valuetab[[3]] %>% html_table()
+value_df <- valuetab[[4]] %>% html_table()
+
+value_df <- value_df %>% select(1, 3, 5, 6, 7) %>%
+  slice(-1)
+
+value_df <- value_df %>% rename("Value_2021" = League,
+                                "Value_2022" = `Value Mar 15, 2021`,
+                                "Difference" = `Current value`)
+
+value_df <- value_df %>% mutate(Value_2021 = parse_number(`Value_2021`),
+                                Value_2022 = parse_number(`Value_2022`),
+                                Difference = parse_number(Difference))
 ```
 
