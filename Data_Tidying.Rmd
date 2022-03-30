@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(rvest)
 library(tidyverse)
+library(zoo)
+library(emphatic)
 
 url <- "https://www.espn.com/soccer/table/_/league/usa.1"
 
@@ -87,9 +89,9 @@ statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
                                   `Goals Against` = as.numeric(`Goals Against`)) 
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
-  mutate(newclub2 = fct_reorder(newclub2, Points)) 
-
-statsfull <- statsfull %>% mutate(Conference = conference) 
+  mutate(newclub2 = fct_reorder(newclub2, Points),
+         Conference = c(0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1),
+         PPG = Points / GP) 
   
 statsfull <- statsfull %>% mutate(Conference = if_else(Conference == 0,
                                             true = "East",
@@ -105,11 +107,21 @@ ggplot(data = statsfull, aes(x = newclub2, y = `Goal Differential`)) +
 
 ggplot(data = statsfull, aes(x = Conference, y = Points)) +
   geom_boxplot()
+
+ggplot(data = statsfull, aes(x = `Goals For`, y = Points, colour = Conference)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+
+ggplot(data = statsfull, aes(x = PPG, y = Seed, colour = Conference)) +
+  geom_point()
+
+statsfull %>% hl(colour = "green", rows = 1)
 ```
 
 ```{r}
 library(rvest)
 library(tidyverse)
+library(zoo)
 
 url2 <- "https://www.espn.com/soccer/stats/_/league/usa.1"
 
@@ -170,5 +182,36 @@ value_df <- value_df %>% rename("Value_2021" = League,
 value_df <- value_df %>% mutate(Value_2021 = parse_number(`Value_2021`),
                                 Value_2022 = parse_number(`Value_2022`),
                                 Difference = parse_number(Difference))
+
+value_df <- value_df %>% mutate(Value_2021 = if_else(Value_2021 > 100,
+                                         true = Value_2021 / 1000,
+                                         false = Value_2021))
+
+value_df <- value_df %>% mutate(diffind = if_else(Difference < 0,
+                                      true = "Decrease",
+                                      false = "Increase"))
+
+ggplot(data = value_df, aes(x = Value_2021, y = Value_2022, colour = diffind)) +
+  geom_point()
+```
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+url4 <- "https://www.transfermarkt.us/major-league-soccer/besucherzahlen/wettbewerb/MLS1/saison_id/2021/plus/1"
+
+## convert the html code into something R can read
+h4 <- read_html(url4)
+
+## grabs the tables
+attendancetab <- h4 %>% html_nodes("table")
+
+attendancetest <- attendancetab[[1]] %>% html_table()
+attendancetest2 <- attendancetab[[2]] %>% html_table()
+attendancetest3 <- attendancetab[[3]] %>% html_table()
+attendance_df <- attendancetab[[4]] %>% html_table()
+
+#attendance_df %>% slice(2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56, 59, 62, 65, 68, 71, 74)
 ```
 

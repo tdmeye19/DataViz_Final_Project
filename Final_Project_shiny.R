@@ -1,5 +1,10 @@
 library(tidyverse)
 library(shiny)
+library(ggrepel)
+library(zoo)
+library(emphatic)
+# install.package('remotes')
+# remotes::install_github('coolbutuseless/emphatic')
 
 ui <- fluidPage(
   titlePanel("MLS 2022 Season Statistics"),
@@ -18,7 +23,8 @@ ui <- fluidPage(
                 tabPanel("Conference Table", tableOutput("conftable")),
                 tabPanel("General Statistics", plotOutput("pointsplot")),
                 tabPanel("Goal Leaders", tableOutput("goalstable")),
-                tabPanel("Assist Leaders", tableOutput("assiststable")))
+                tabPanel("Assist Leaders", tableOutput("assiststable")),
+                tabPanel("Club Value"))
     
   )
   )
@@ -31,13 +37,15 @@ server <- function(input, output, session) {
   })
   
   conf_sub <- reactive({
-    statsfull %>% filter(Conference == input$confchoice) %>%
-      select(-Conference)
+    statsfull %>% filter(Conference == input$confchoice)
+  })
+  
+  club_sub <- reactive({
+    conf_sub() %>% select(newclub2)
   })
   
   observeEvent(input$confchoice, {
-    conf_sub()
-    updateSelectizeInput(inputId = "clubchoice")
+    updateSelectizeInput(inputId = "clubchoice", choices = club_sub())
   })
   
   goals_sub <- reactive({
@@ -49,12 +57,12 @@ server <- function(input, output, session) {
   })
   
   pointsplot <- reactive({
-    ggplot(data = statsfull, aes(x = Points, y = `Goal Differential`, colour = Conference, label = input$clubchoice)) +
+    ggplot(data = statsfull, aes(x = Points, y = `Goal Differential`, colour = Conference)) +
       geom_point() +
       coord_flip() +
-      geom_point(data = stats_sub(), aes(x = Points, y = `Goal Differential`, colour = "green")) +
-      geom_label(data = stats_sub(), aes(x = Points, y = `Goal Differential`, colour = "green"))
-    
+      geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
+      geom_point(data = stats_sub(), size = 3, shape = 1) +
+      scale_colour_brewer(palette = "Dark2")
   })
   
   output$pointsplot <- renderPlot(
@@ -66,7 +74,7 @@ server <- function(input, output, session) {
   )
   
   output$goalstable <- renderTable(
-    goals_sub()
+    goals_sub() %>% hl(colour = "green", rows = input$clubchoice)
   )
   
   output$assiststable <- renderTable(

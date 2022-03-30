@@ -21,3 +21,7 @@ I am working on trying to have one input affect the values of the other input. I
 ## March 30 Beginning of Class
 
 The majority of time outside of class was getting the updateSelectizeInput function to work, I got it to work partly, I just need to get help on only having newclub2 be the variable to choose from. I also added Points per game (PPG), and started on possibly adding smoothers for each conference with a variable, that they could choose, plotted against Points.
+
+## March 30 End of Class
+
+This class was spent fixing the updateSelectizeInput function. I also fixed the label ability on the plots to outline the point, and create the label beside it, not being the whole point. I am trying to possibly add value_df to the app, and I scraped attendance_df. I could add a tab for team value compared to points scored, and also attendance at their home stadium.
