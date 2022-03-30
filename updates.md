@@ -17,3 +17,7 @@ Over the weekend I included conferences, and added the team value data set, whic
 ## March 28 End of Class
 
 I am working on trying to have one input affect the values of the other input. I want the user to be able to select a conference, and then the next input is the clubs, but only from the conference they input. I tried adding another tab for values, but got stuck messing with the club/conference inputs.
+
+## March 30 Beginning of Class
+
+The majority of time outside of class was getting the updateSelectizeInput function to work, I got it to work partly, I just need to get help on only having newclub2 be the variable to choose from. I also added Points per game (PPG), and started on possibly adding smoothers for each conference with a variable, that they could choose, plotted against Points.
