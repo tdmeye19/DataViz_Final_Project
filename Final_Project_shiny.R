@@ -24,7 +24,8 @@ ui <- fluidPage(
                 tabPanel("General Statistics", plotOutput("pointsplot")),
                 tabPanel("Goal Leaders", tableOutput("goalstable")),
                 tabPanel("Assist Leaders", tableOutput("assiststable")),
-                tabPanel("Club Value"))
+                tabPanel("Club Value"),
+                tabPanel("Expected Statistics"))
     
   )
   )
@@ -74,7 +75,7 @@ server <- function(input, output, session) {
   )
   
   output$goalstable <- renderTable(
-    goals_sub() %>% hl(colour = "green", rows = input$clubchoice)
+    goals_sub() 
   )
   
   output$assiststable <- renderTable(

@@ -25,3 +25,7 @@ The majority of time outside of class was getting the updateSelectizeInput funct
 ## March 30 End of Class
 
 This class was spent fixing the updateSelectizeInput function. I also fixed the label ability on the plots to outline the point, and create the label beside it, not being the whole point. I am trying to possibly add value_df to the app, and I scraped attendance_df. I could add a tab for team value compared to points scored, and also attendance at their home stadium.
+
+## April 4 Beginning of Class
+
+This past weekend I spent a lot of time trying to find data sets and add new ta the app. I found a website that has a lot of data on xGoals and xPoints for teams, so I will add a tab or two along with a visual for that. I tried working with the club value and attendance data sets, however the format after scraping would not allow for changes. I spent almost an hour tidying the xgoals_df, and creating plots. I will just need to incorporate that into my app.

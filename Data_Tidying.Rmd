@@ -90,7 +90,7 @@ statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
   mutate(newclub2 = fct_reorder(newclub2, Points),
-         Conference = c(0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1),
+         Conference = c(0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0),
          PPG = Points / GP) 
   
 statsfull <- statsfull %>% mutate(Conference = if_else(Conference == 0,
@@ -191,27 +191,67 @@ value_df <- value_df %>% mutate(diffind = if_else(Difference < 0,
                                       true = "Decrease",
                                       false = "Increase"))
 
-ggplot(data = value_df, aes(x = Value_2021, y = Value_2022, colour = diffind)) +
-  geom_point()
+value_df <- value_df %>% mutate(club = fct_recode(club, 
+                                                  LAFC = "Los Angeles FC",
+                                                  `LA Galaxy` = "Los Angeles Galaxy",
+                                                  `Vancouver Whitecaps` = "Vancouver Whitecaps FC",
+                                                  `Real Salt Lake` = "Real Salt Lake City"))
+
+ggplot(data = value_df, aes(x = Value_2022, y = statsfull$Points, colour = diffind)) +
+  geom_point() +
+  coord_flip()
 ```
 
 ```{r}
 library(rvest)
 library(tidyverse)
 
-url4 <- "https://www.transfermarkt.us/major-league-soccer/besucherzahlen/wettbewerb/MLS1/saison_id/2021/plus/1"
+library(readr)
+xgoals_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_teams_2022-04-04.csv")
+xgoals_df <- xgoals_df %>% select(-1, -3)
 
-## convert the html code into something R can read
-h4 <- read_html(url4)
+xgoals_df <- xgoals_df %>% rename("club" = Team)
 
-## grabs the tables
-attendancetab <- h4 %>% html_nodes("table")
+xgoals_df <- xgoals_df %>% mutate(club = fct_recode(club,
+                                                    `Philadelphia Union` = "PHI",
+                                                    `Real Salt Lake` = "RSL",
+                                                    `New York Red Bulls` = "NYRB",
+                                                    `Atlanta United FC` = "ATL",
+                                                    `Chicago Fire FC` = "CHI",
+                                                    `LA Galaxy` = "LAG",
+                                                    `Columbus Crew` = "CLB",
+                                                    `Orlando City SC` = "ORL",
+                                                    `Austin FC` = "ATX",
+                                                    `FC Dallas` = "FCD",
+                                                    `Colorado Rapids` = "COL",
+                                                    `Houston Dynamo FC` = "HOU",
+                                                    `Minnesota United FC` = "MIN",
+                                                    `Toronto FC` = "TOR",
+                                                    `Seattle Sounders FC` = "SEA",
+                                                    `Nashville SC` = "NSH",
+                                                    `D.C. United` = "DCU",
+                                                    `Charlotte FC` = "CLT",
+                                                    `FC Cincinnati` = "CIN",
+                                                    `Sporting Kansas City` = "SKC",
+                                                    `Portland Timbers` = "POR",
+                                                    `New York City FC` = "NYC",
+                                                    `New England Revolution` = "NER",
+                                                    `CF Montréal` = "MTL",
+                                                    `Vancouver Whitecaps` = "VAN",
+                                                    `San Jose Earthquakes` = "SJE",
+                                                    `Inter Miami CF` = "MIA"))
+xgoals_df <- xgoals_df %>% mutate(club = fct_reorder(club, Pts))
 
-attendancetest <- attendancetab[[1]] %>% html_table()
-attendancetest2 <- attendancetab[[2]] %>% html_table()
-attendancetest3 <- attendancetab[[3]] %>% html_table()
-attendance_df <- attendancetab[[4]] %>% html_table()
+ggplot(data = xgoals_df, aes(x = club, y = Pts)) +
+  geom_point() + 
+  geom_segment(aes(x = club, xend = club, y = 0, yend = Pts)) +
+  geom_point(aes(x = club, y = xPts, colour = "red")) +
+  coord_flip()
 
-#attendance_df %>% slice(2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56, 59, 62, 65, 68, 71, 74)
+ggplot(data = xgoals_df, aes(x = club, y = GF)) +
+  geom_point() + 
+  geom_segment(aes(x = club, xend = club, y = 0, yend = GF)) +
+  geom_point(aes(x = club, y = xGF, colour = "red")) +
+  coord_flip()
 ```
 
