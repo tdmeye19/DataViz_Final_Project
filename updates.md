@@ -29,3 +29,7 @@ This class was spent fixing the updateSelectizeInput function. I also fixed the 
 ## April 4 Beginning of Class
 
 This past weekend I spent a lot of time trying to find data sets and add new ta the app. I found a website that has a lot of data on xGoals and xPoints for teams, so I will add a tab or two along with a visual for that. I tried working with the club value and attendance data sets, however the format after scraping would not allow for changes. I spent almost an hour tidying the xgoals_df, and creating plots. I will just need to incorporate that into my app.
+
+## April 4 End of Class
+
+I found out how to display the input club on the lollipop plot, which allows the user to see how the club they chose was different compared to the rest. I started to change the labels on the plots to look nicer, along with changing colors so that the plots are CVD friendly. I am currently playing around in a smaller app trying to figure out how to highlight a row based on user input, which I have never gotten to work yet.

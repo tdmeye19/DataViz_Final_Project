@@ -24,8 +24,9 @@ ui <- fluidPage(
                 tabPanel("General Statistics", plotOutput("pointsplot")),
                 tabPanel("Goal Leaders", tableOutput("goalstable")),
                 tabPanel("Assist Leaders", tableOutput("assiststable")),
-                tabPanel("Club Value"),
-                tabPanel("Expected Statistics"))
+                tabPanel("Club Value", plotOutput("valueplot")),
+                tabPanel("Expected Points", plotOutput("xpointsplot")),
+                tabPanel("Expected Goals", plotOutput("xgoalsplot")))
     
   )
   )
@@ -63,7 +64,37 @@ server <- function(input, output, session) {
       coord_flip() +
       geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
       geom_point(data = stats_sub(), size = 3, shape = 1) +
+      scale_colour_brewer(palette = "Dark2") +
+      labs(title = "Points Comparison to Goal Differential",
+            x = "Points",
+            y = "Goal Differential")
+  })
+  
+  valueplot <- reactive({
+    ggplot(data = statsfull, aes(x = value22, y = Points, colour = diffind)) +
+      geom_point() +
+      coord_flip() +
+      geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
+      geom_point(data = stats_sub(), size = 3, shape = 1) +
       scale_colour_brewer(palette = "Dark2")
+  })
+  
+  xpointsplot <- reactive({
+    ggplot(data = statsfull, aes(x = newclub2, y = Pts)) +
+      geom_point() + 
+      geom_segment(data = statsfull, aes(x = newclub2, xend = newclub2, y = 0, yend = Pts)) +
+      geom_segment(data = stats_sub(), aes(x = input$clubchoice, xend = input$clubchoice, y = 0, yend = Pts, colour = "green")) +
+      geom_point(data = stats_sub(), aes(x = newclub2, y = xPts, colour = "red")) +
+      coord_flip()
+  })
+  
+  xgoalsplot <- reactive({
+    ggplot(data = statsfull, aes(x = newclub2, y = GF)) +
+      geom_point() + 
+      geom_segment(data = statsfull, aes(x = newclub2, xend = newclub2, y = 0, yend = GF)) +
+      geom_segment(data = stats_sub(), aes(x = input$clubchoice, xend = input$clubchoice, y = 0, yend = GF, colour = "green")) +
+      geom_point(data = stats_sub(), aes(x = newclub2, y = xGF, colour = "red")) +
+      coord_flip()
   })
   
   output$pointsplot <- renderPlot(
@@ -80,6 +111,18 @@ server <- function(input, output, session) {
   
   output$assiststable <- renderTable(
     assists_sub()
+  )
+  
+  output$valueplot <- renderPlot(
+    valueplot()
+  )
+  
+  output$xpointsplot <- renderPlot(
+    xpointsplot()
+  )
+  
+  output$xgoalsplot <- renderPlot(
+    xgoalsplot()
   )
 }
 

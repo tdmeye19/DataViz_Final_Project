@@ -179,6 +179,8 @@ value_df <- value_df %>% rename("Value_2021" = League,
                                 "Value_2022" = `Value Mar 15, 2021`,
                                 "Difference" = `Current value`)
 
+value_df <- value_df %>% rename("value22" = Value_2022)
+
 value_df <- value_df %>% mutate(Value_2021 = parse_number(`Value_2021`),
                                 Value_2022 = parse_number(`Value_2022`),
                                 Difference = parse_number(Difference))
@@ -197,7 +199,7 @@ value_df <- value_df %>% mutate(club = fct_recode(club,
                                                   `Vancouver Whitecaps` = "Vancouver Whitecaps FC",
                                                   `Real Salt Lake` = "Real Salt Lake City"))
 
-ggplot(data = value_df, aes(x = Value_2022, y = statsfull$Points, colour = diffind)) +
+ggplot(data = value_df, aes(x = value22, y = statsfull$Points, colour = diffind)) +
   geom_point() +
   coord_flip()
 ```
@@ -253,5 +255,11 @@ ggplot(data = xgoals_df, aes(x = club, y = GF)) +
   geom_segment(aes(x = club, xend = club, y = 0, yend = GF)) +
   geom_point(aes(x = club, y = xGF, colour = "red")) +
   coord_flip()
+```
+
+## Joining Data Sets
+```{r}
+statsfull <- inner_join(statsfull, value_df, by = c("newclub2" = "club"))
+statsfull <- inner_join(statsfull, xgoals_df, by = c("newclub2" = "club"))
 ```
 

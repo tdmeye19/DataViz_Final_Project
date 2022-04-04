@@ -13,3 +13,7 @@ Alyssa Bigness: Creating a shiny app using MLB salary data. She is having troubl
 ## March 30
 
 Nick Grammas: He is creating a blogdown post about real estate in Boston. He has different variables that he is plotting against each other, and using formula to calculate important real estate values that he can use to help someone get a better idea of properties in their price range. He wants to/might have started creating a map where the user can zoom in to see potential properties in different neighborhoods.
+
+## April 4
+
+Kaden Pickering: He is creating a shiny app about NHL data for games going back to the 2008 season. He wants to be able to add more than tab, and have the input team affect each tab in the app. He needs to look to see if he can come up with more hypotheses for each tab, and then he can decide what output would go in each tab.
