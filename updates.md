@@ -37,3 +37,7 @@ I found out how to display the input club on the lollipop plot, which allows the
 ## April 6 Beginning of Class
 
 I worked on formatting the conference table so that the user input club will be highlighted. I am testing the code in input_test.R and have some errors that I need to fix. I also tried looking up solutions to the Conference issue since the data is scraped every week to update with the weekend games. 
+
+## April 6 End of Class
+
+I used a case_when statement to have the conferences stay set instead of manually coding them.I am still working on the highlighting idea, and am having troubles using reactive values.

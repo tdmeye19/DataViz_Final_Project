@@ -17,3 +17,8 @@ Nick Grammas: He is creating a blogdown post about real estate in Boston. He has
 ## April 4
 
 Kaden Pickering: He is creating a shiny app about NHL data for games going back to the 2008 season. He wants to be able to add more than tab, and have the input team affect each tab in the app. He needs to look to see if he can come up with more hypotheses for each tab, and then he can decide what output would go in each tab.
+
+## April 6
+
+Charlie Reinhardt: He is creating an R package that scrapes hockey data from the ECAC website. He has it so that he can get individuals' team data now. His last step is that he needs to decide whether to use a for loop or create a function that will allow him to pull some data. He has functions to create plots for variables and teams, and just needs to continue working on scraping the data.
+

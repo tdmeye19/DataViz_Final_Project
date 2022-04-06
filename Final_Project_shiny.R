@@ -89,6 +89,7 @@ server <- function(input, output, session) {
   })
   
   xgoalsplot <- reactive({
+    statsfull %>% mutate(newclub2 = fct_reorder(club, xGF))
     ggplot(data = statsfull, aes(x = newclub2, y = GF)) +
       geom_point() + 
       geom_segment(data = statsfull, aes(x = newclub2, xend = newclub2, y = 0, yend = GF)) +
@@ -102,7 +103,7 @@ server <- function(input, output, session) {
   )
   
   output$conftable <- renderTable(
-    conf_sub()
+    conf_sub() %>% select(1:11)
   )
   
   output$goalstable <- renderTable(

@@ -26,7 +26,7 @@ test2 <- tab[[2]] %>% html_table()
 
 statsfull <- bind_cols(test1, test2)
 
-test1 <- test1 %>% slice(-1, -15)
+#test1 <- test1 %>% slice(-1, -15)
 
 statsfull <- statsfull %>% rename("club" = X1...1, "GP" = X1...2, 
                                       "Wins" = X2 , "Draws" = X3 ,
@@ -90,8 +90,39 @@ statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
   mutate(newclub2 = fct_reorder(newclub2, Points),
-         Conference = c(0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0),
          PPG = Points / GP) 
+
+statsfull <- statsfull %>% mutate(Conference = 0)
+
+statsfull <- statsfull %>% mutate(Conference = 
+                 case_when(newclub2 == "Philadelphia Union" ~ 0,
+                           newclub2 == "LAFC" ~ 1,
+                           newclub2 == "Real Salt Lake" ~ 1,
+                           newclub2 == "New York Red Bulls" ~ 0,
+                           newclub2 == "Atlanta United FC" ~ 0,
+                           newclub2 == "Chicago Fire FC" ~ 0,
+                           newclub2 == "LA Galaxy" ~ 1,
+                           newclub2 == "Columbus Crew" ~ 0,
+                           newclub2 == "Orlando City SC" ~ 0,
+                           newclub2 == "Austin FC" ~ 1,
+                           newclub2 == "FC Dallas" ~ 1,
+                           newclub2 == "Colorado Rapids" ~ 1,
+                           newclub2 == "Houston Dynamo FC" ~ 1,
+                           newclub2 == "Minnesota United FC" ~ 1,
+                           newclub2 == "Toronto FC" ~ 0,
+                           newclub2 == "Seattle Sounders FC" ~ 1,
+                           newclub2 == "Nashville SC" ~ 1,
+                           newclub2 == "D.C. United" ~ 0,
+                           newclub2 == "Charlotte FC" ~ 0,
+                           newclub2 == "FC Cincinnati" ~ 0,
+                           newclub2 == "Sporting Kansas City" ~ 1,
+                           newclub2 == "Portland Timbers" ~ 1,
+                           newclub2 == "New York City FC" ~ 0,
+                           newclub2 == "New England Revolution" ~ 0,
+                           newclub2 == "CF Montréal" ~ 0,
+                           newclub2 == "Vancouver Whitecaps" ~ 1,
+                           newclub2 == "San Jose Earthquakes" ~ 1,
+                           newclub2 == "Inter Miami CF" ~ 0))
   
 statsfull <- statsfull %>% mutate(Conference = if_else(Conference == 0,
                                             true = "East",
@@ -114,8 +145,6 @@ ggplot(data = statsfull, aes(x = `Goals For`, y = Points, colour = Conference)) 
 
 ggplot(data = statsfull, aes(x = PPG, y = Seed, colour = Conference)) +
   geom_point()
-
-statsfull %>% hl(colour = "green", rows = 1)
 ```
 
 ```{r}
@@ -167,9 +196,9 @@ h3 <- read_html(url3)
 ## grabs the tables
 valuetab <- h3 %>% html_nodes("table")
 
-valuetest <- valuetab[[1]] %>% html_table()
-valuetest2 <- valuetab[[2]] %>% html_table()
-valuetest3 <- valuetab[[3]] %>% html_table()
+#valuetest <- valuetab[[1]] %>% html_table()
+#valuetest2 <- valuetab[[2]] %>% html_table()
+#valuetest3 <- valuetab[[3]] %>% html_table()
 value_df <- valuetab[[4]] %>% html_table()
 
 value_df <- value_df %>% select(1, 3, 5, 6, 7) %>%

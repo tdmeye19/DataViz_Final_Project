@@ -23,13 +23,13 @@ server <- function(input, output, session) {
     row_priority = statsfull$newclub2,
     row_color = rep('white', 14)
   )
-  
+
   observeEvent(input$clubchoice, {
     vals$row_priority <- 
       c(input$clubchoice, vals$row_priority[vals$row_priority != input$clubchoice])
-    vals$row_color <- c('lightgreen', 'white', 'white', 'white', 'white', 'white', 'white'
-                        , 'white', 'white', 'white', 'white', 'white', 'white', 'white')
+    vals$row_color <- c('lightgreen', 'white', 'white')
   })
+  
   conf_sub <- reactive({
     statsfull %>% filter(Conference == input$confchoice)
   })
@@ -43,13 +43,7 @@ server <- function(input, output, session) {
   })
   
   output$conftable <- reactive({
-    conf_sub() %>% 
-      formatStyle("clubchoice",
-                  target = "row",
-                  backgroundColor = styleEqual(vals$row_priority, 
-                                               vals$row_color, 
-                                               default = 'white'))
+    conf_sub()
   })
 }
-
 shinyApp(ui, server)
