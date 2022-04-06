@@ -1,4 +1,5 @@
 library(shiny)
+library(DT)
 
 ui <- fluidPage(
   sidebarLayout(
@@ -12,7 +13,7 @@ ui <- fluidPage(
                      selected = NULL)),
     mainPanel(
       tabsetPanel(type = "tabs",
-                  tabPanel("Conference Table", tableOutput("conftable")
+                  tabPanel("Conference Table", dataTableOutput("conftable")
     )
 ))))
 
@@ -20,13 +21,14 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   vals <- reactiveValues(
     row_priority = statsfull$newclub2,
-    row_color = rep('white', 3)
+    row_color = rep('white', 14)
   )
   
   observeEvent(input$clubchoice, {
     vals$row_priority <- 
       c(input$clubchoice, vals$row_priority[vals$row_priority != input$clubchoice])
-    vals$row_color <- c('lightgreen', 'white', 'white')
+    vals$row_color <- c('lightgreen', 'white', 'white', 'white', 'white', 'white', 'white'
+                        , 'white', 'white', 'white', 'white', 'white', 'white', 'white')
   })
   conf_sub <- reactive({
     statsfull %>% filter(Conference == input$confchoice)
@@ -40,18 +42,14 @@ server <- function(input, output, session) {
     statsfull %>% filter(Conference == input$confchoice)
   })
   
-  club_sub <- reactive({
-    conf_sub() %>% select(newclub2) %>% 
+  output$conftable <- reactive({
+    conf_sub() %>% 
       formatStyle("clubchoice",
                   target = "row",
                   backgroundColor = styleEqual(vals$row_priority, 
-                  vals$row_color, 
-                  default = 'white'))
+                                               vals$row_color, 
+                                               default = 'white'))
   })
-  
-  output$conftable <- renderTable(
-    conf_sub()
-  )
 }
 
 shinyApp(ui, server)

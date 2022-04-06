@@ -33,3 +33,7 @@ This past weekend I spent a lot of time trying to find data sets and add new ta 
 ## April 4 End of Class
 
 I found out how to display the input club on the lollipop plot, which allows the user to see how the club they chose was different compared to the rest. I started to change the labels on the plots to look nicer, along with changing colors so that the plots are CVD friendly. I am currently playing around in a smaller app trying to figure out how to highlight a row based on user input, which I have never gotten to work yet.
+
+## April 6 Beginning of Class
+
+I worked on formatting the conference table so that the user input club will be highlighted. I am testing the code in input_test.R and have some errors that I need to fix. I also tried looking up solutions to the Conference issue since the data is scraped every week to update with the weekend games. 
