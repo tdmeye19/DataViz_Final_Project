@@ -51,11 +51,14 @@ server <- function(input, output, session) {
   })
   
   goals_sub <- reactive({
-    goal_leaders %>% filter(Club == input$clubchoice) %>% select(newrank, Player, Club, GP, Goals)
+    goal_leaders %>% filter(Club == input$clubchoice) %>% select(newrank, Player, Club, GP, Goals) %>%
+      rename("Rank" = newrank)
+    
   })
   
   assists_sub <- reactive({
-    assist_leaders %>% filter(Club == input$clubchoice) %>% select(newrank, Player, Club, GP, Assists)
+    assist_leaders %>% filter(Club == input$clubchoice) %>% select(newrank, Player, Club, GP, Assists) %>%
+      rename("Rank" = newrank)
   })
   
   pointsplot <- reactive({
@@ -71,31 +74,46 @@ server <- function(input, output, session) {
   })
   
   valueplot <- reactive({
-    ggplot(data = statsfull, aes(x = value22, y = Points, colour = diffind)) +
+    ggplot(data = statsfull, aes(x = value22, y = Points, colour = Conference)) +
       geom_point() +
       coord_flip() +
       geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
       geom_point(data = stats_sub(), size = 3, shape = 1) +
-      scale_colour_brewer(palette = "Dark2")
+      scale_colour_brewer(palette = "Dark2") +
+      labs(title = "Club Value Compared to Points",
+           subtitle = "https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1",
+           x = "Club Value",
+           y = "Points")
   })
   
   xpointsplot <- reactive({
+    statsfull %>% mutate(newclub2 = fct_reorder(newclub2, xPts))
     ggplot(data = statsfull, aes(x = newclub2, y = Pts)) +
       geom_point() + 
       geom_segment(data = statsfull, aes(x = newclub2, xend = newclub2, y = 0, yend = Pts)) +
       geom_segment(data = stats_sub(), aes(x = input$clubchoice, xend = input$clubchoice, y = 0, yend = Pts, colour = "green")) +
       geom_point(data = stats_sub(), aes(x = newclub2, y = xPts, colour = "red")) +
-      coord_flip()
+      coord_flip() +
+      labs(title = "Expected Points Compared to Actual Points",
+           subtitle = "https://app.americansocceranalysis.com/#!/mls",
+           x = "Club",
+           y = "Points",
+           colour = "Statistic")
   })
   
   xgoalsplot <- reactive({
-    statsfull %>% mutate(newclub2 = fct_reorder(club, xGF))
+    statsfull %>% mutate(newclub2 = fct_reorder(newclub2, xGF))
     ggplot(data = statsfull, aes(x = newclub2, y = GF)) +
       geom_point() + 
       geom_segment(data = statsfull, aes(x = newclub2, xend = newclub2, y = 0, yend = GF)) +
       geom_segment(data = stats_sub(), aes(x = input$clubchoice, xend = input$clubchoice, y = 0, yend = GF, colour = "green")) +
       geom_point(data = stats_sub(), aes(x = newclub2, y = xGF, colour = "red")) +
-      coord_flip()
+      coord_flip() +
+      labs(title = "Expected Goals Compared to Actual Goals",
+           subtitle = "https://app.americansocceranalysis.com/#!/mls",
+           x = "Club",
+           y = "Goals For",
+           colour = "Statistic")
   })
   
   output$pointsplot <- renderPlot(

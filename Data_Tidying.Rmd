@@ -79,14 +79,15 @@ statsfull <- statsfull %>% select(Seed, newclub2, Points, GP, everything())
 
 statsfull$Points
 
-statsfull <- statsfull %>% mutate(Points = as.numeric(Points),
-                                  `Goal Differential` = as.numeric(`Goal Differential`),
-                                  GP = as.numeric(GP),
-                                  Wins = as.numeric(Wins),
-                                  Draws = as.numeric(Draws),
-                                  Losses = as.numeric(Losses),
-                                  `Goals For` = as.numeric(`Goals For`),
-                                  `Goals Against` = as.numeric(`Goals Against`)) 
+statsfull <- statsfull %>% mutate(Points = as.integer(Points),
+                                  `Goal Differential` = as.integer(`Goal Differential`),
+                                  GP = as.integer(GP),
+                                  Wins = as.integer(Wins),
+                                  Draws = as.integer(Draws),
+                                  Losses = as.integer(Losses),
+                                  `Goals For` = as.integer(`Goals For`),
+                                  `Goals Against` = as.integer(`Goals Against`),
+                                  Seed = as.integer(Seed)) 
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
   mutate(newclub2 = fct_reorder(newclub2, Points),
