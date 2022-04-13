@@ -42,6 +42,10 @@ server <- function(input, output, session) {
     statsfull %>% filter(Conference == input$confchoice)
   })
   
+  notconf_sub <- reactive({
+    statsfull %>% filter(Conference != input$confchoice)
+  })
+  
   club_sub <- reactive({
     conf_sub() %>% select(newclub2)
   })
@@ -75,7 +79,8 @@ server <- function(input, output, session) {
   
   valueplot <- reactive({
     ggplot(data = statsfull, aes(x = value22, y = Points, colour = Conference)) +
-      geom_point() +
+      geom_point(data = conf_sub()) +
+      geom_point(data = notconf_sub(), alpha = 0.35) +
       coord_flip() +
       geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
       geom_point(data = stats_sub(), size = 3, shape = 1) +

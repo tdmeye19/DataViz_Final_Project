@@ -229,9 +229,14 @@ value_df <- value_df %>% mutate(club = fct_recode(club,
                                                   `Vancouver Whitecaps` = "Vancouver Whitecaps FC",
                                                   `Real Salt Lake` = "Real Salt Lake City"))
 
-ggplot(data = value_df, aes(x = value22, y = statsfull$Points, colour = diffind)) +
+statsfull <- statsfull %>% mutate(newclub2 = fct_reorder(newclub2, Points))
+
+ggplot(data = statsfull, aes(x = value22, y = Points, colour = Conference)) +
   geom_point() +
   coord_flip()
+
+ggplot(data = value_df, aes(x = value22)) +
+  geom_dotplot()
 ```
 
 ```{r}
