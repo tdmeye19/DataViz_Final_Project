@@ -343,6 +343,7 @@ ggplot(data = goalie_df, aes(x = `Shots Faced`, y = `Goals Conceded`)) +
 statsfull <- inner_join(statsfull, value_df, by = c("club" = "club"))
 statsfull <- inner_join(statsfull, xgoals_df, by = c("club" = "club"))
 
+# gets rid of the dollar sign
 statsfull <- statsfull %>% mutate(value22 = parse_number(value22))
 ```
 
