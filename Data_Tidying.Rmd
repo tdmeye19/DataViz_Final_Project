@@ -334,8 +334,11 @@ goalie_df <- goalie_df %>% mutate(club = fct_recode(club,
                                                     `San Jose Earthquakes` = "SJE",
                                                     `Inter Miami CF` = "MIA"))
 
-ggplot(data = goalie_df, aes(x = `Shots Faced`, y = `Goals Conceded`)) +
-  geom_point()
+ggplot(data = goalie_df, aes(x = `Goals Conceded`, y = `Shots Faced`)) +
+  geom_point(size = 5) +
+  theme(axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text = element_text(size = 14))
 ```
 
 ## Joining Data Sets
@@ -345,5 +348,7 @@ statsfull <- inner_join(statsfull, xgoals_df, by = c("club" = "club"))
 
 # gets rid of the dollar sign
 statsfull <- statsfull %>% mutate(value22 = parse_number(value22))
+
+
 ```
 

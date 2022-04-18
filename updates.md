@@ -42,8 +42,10 @@ I worked on formatting the conference table so that the user input club will be 
 
 I used a case_when statement to have the conferences stay set instead of manually coding them.I am still working on the highlighting idea, and am having troubles using reactive values.
 
-
-
 ## April 18 Beginning of Class (Fixing the committ message)
 
 I fixed some more of the labels on the club value plots. I added a new tab with goals for compared to club value, to see if the money spent on attackers and goal scorers is paying off for clubs like Atlanta and LAFC. On the xPoints and xGF plots I fixed the legend so that it says what each color means. I am trying to add some goalkeeper stats that I found, I got the data to read in, I just need to find out which plot I want to make since it is individual keepers instead of club data. 
+
+## April 18 End of Class
+
+I fixed the axis text so that it was larger, along with fixing the size of the points. Viewing the app in a seperate window made the texts and points much smaller, but now they are readable. I added another tab for the goalie data with a plot, I am going to try and add a line or some visual to the data that shows the average or what is ideal for that stat.

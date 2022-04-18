@@ -22,3 +22,7 @@ Kaden Pickering: He is creating a shiny app about NHL data for games going back 
 
 Charlie Reinhardt: He is creating an R package that scrapes hockey data from the ECAC website. He has it so that he can get individuals' team data now. His last step is that he needs to decide whether to use a for loop or create a function that will allow him to pull some data. He has functions to create plots for variables and teams, and just needs to continue working on scraping the data.
 
+## April 18
+
+Shane Hauck: He is creating a Shiny app with data from the Premier League. He had a problem with merging data sets where the names for each of the players did not line up, so he had to manually recode all of them. He is now working on possibly comparing players stats in terms of 90 minutes or one game.
+
