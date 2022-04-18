@@ -40,10 +40,10 @@ statsfull <- statsfull %>% arrange(desc(Points))
 
 statsfull <- statsfull %>% 
   mutate(Seed = parse_number(club)) %>%
-  mutate(newclub = str_remove(club, pattern = "[[:digit:]]+"))
+  mutate(club = str_remove(club, pattern = "[[:digit:]]+"))
 
 statsfull <- statsfull %>% 
-  mutate(newclub2 = fct_recode(newclub, 
+  mutate(club = fct_recode(club, 
                                `New England Revolution` = "NENew England Revolution",
                                `Seattle Sounders FC` = "SEASeattle Sounders FC",
                                `Sporting Kansas City` = "SKCSporting Kansas City",
@@ -73,9 +73,9 @@ statsfull <- statsfull %>%
                                `FC Cincinnati` = "CINFC Cincinnati",
                                `Charlotte FC` = "CLTCharlotte FC"))
 
-statsfull <- statsfull %>% select(-club, -newclub)
+#statsfull <- statsfull %>% select(-club, -newclub)
 
-statsfull <- statsfull %>% select(Seed, newclub2, Points, GP, everything())
+statsfull <- statsfull %>% select(Seed, club, Points, GP, everything())
 
 statsfull$Points
 
@@ -90,50 +90,50 @@ statsfull <- statsfull %>% mutate(Points = as.integer(Points),
                                   Seed = as.integer(Seed)) 
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
-  mutate(newclub2 = fct_reorder(newclub2, Points),
+  mutate(club = fct_reorder(club, Points),
          PPG = Points / GP) 
 
 statsfull <- statsfull %>% mutate(Conference = 0)
 
 statsfull <- statsfull %>% mutate(Conference = 
-                 case_when(newclub2 == "Philadelphia Union" ~ 0,
-                           newclub2 == "LAFC" ~ 1,
-                           newclub2 == "Real Salt Lake" ~ 1,
-                           newclub2 == "New York Red Bulls" ~ 0,
-                           newclub2 == "Atlanta United FC" ~ 0,
-                           newclub2 == "Chicago Fire FC" ~ 0,
-                           newclub2 == "LA Galaxy" ~ 1,
-                           newclub2 == "Columbus Crew" ~ 0,
-                           newclub2 == "Orlando City SC" ~ 0,
-                           newclub2 == "Austin FC" ~ 1,
-                           newclub2 == "FC Dallas" ~ 1,
-                           newclub2 == "Colorado Rapids" ~ 1,
-                           newclub2 == "Houston Dynamo FC" ~ 1,
-                           newclub2 == "Minnesota United FC" ~ 1,
-                           newclub2 == "Toronto FC" ~ 0,
-                           newclub2 == "Seattle Sounders FC" ~ 1,
-                           newclub2 == "Nashville SC" ~ 1,
-                           newclub2 == "D.C. United" ~ 0,
-                           newclub2 == "Charlotte FC" ~ 0,
-                           newclub2 == "FC Cincinnati" ~ 0,
-                           newclub2 == "Sporting Kansas City" ~ 1,
-                           newclub2 == "Portland Timbers" ~ 1,
-                           newclub2 == "New York City FC" ~ 0,
-                           newclub2 == "New England Revolution" ~ 0,
-                           newclub2 == "CF Montréal" ~ 0,
-                           newclub2 == "Vancouver Whitecaps" ~ 1,
-                           newclub2 == "San Jose Earthquakes" ~ 1,
-                           newclub2 == "Inter Miami CF" ~ 0))
+                 case_when(club == "Philadelphia Union" ~ 0,
+                           club == "LAFC" ~ 1,
+                           club == "Real Salt Lake" ~ 1,
+                           club == "New York Red Bulls" ~ 0,
+                           club == "Atlanta United FC" ~ 0,
+                           club == "Chicago Fire FC" ~ 0,
+                           club == "LA Galaxy" ~ 1,
+                           club == "Columbus Crew" ~ 0,
+                           club == "Orlando City SC" ~ 0,
+                           club == "Austin FC" ~ 1,
+                           club == "FC Dallas" ~ 1,
+                           club == "Colorado Rapids" ~ 1,
+                           club == "Houston Dynamo FC" ~ 1,
+                           club == "Minnesota United FC" ~ 1,
+                           club == "Toronto FC" ~ 0,
+                           club == "Seattle Sounders FC" ~ 1,
+                           club == "Nashville SC" ~ 1,
+                           club == "D.C. United" ~ 0,
+                           club == "Charlotte FC" ~ 0,
+                           club == "FC Cincinnati" ~ 0,
+                           club == "Sporting Kansas City" ~ 1,
+                           club == "Portland Timbers" ~ 1,
+                           club == "New York City FC" ~ 0,
+                           club == "New England Revolution" ~ 0,
+                           club == "CF Montréal" ~ 0,
+                           club == "Vancouver Whitecaps" ~ 1,
+                           club == "San Jose Earthquakes" ~ 1,
+                           club == "Inter Miami CF" ~ 0))
   
 statsfull <- statsfull %>% mutate(Conference = if_else(Conference == 0,
                                             true = "East",
                                             false = "West"))
 
-ggplot(data = statsfull, aes(x = newclub2, y = Points)) +
+ggplot(data = statsfull, aes(x = club, y = Points)) +
   geom_point() +
   coord_flip()
 
-ggplot(data = statsfull, aes(x = newclub2, y = `Goal Differential`)) +
+ggplot(data = statsfull, aes(x = club, y = `Goal Differential`)) +
   geom_point() +
   coord_flip()
 
@@ -229,7 +229,9 @@ value_df <- value_df %>% mutate(club = fct_recode(club,
                                                   `Vancouver Whitecaps` = "Vancouver Whitecaps FC",
                                                   `Real Salt Lake` = "Real Salt Lake City"))
 
-statsfull <- statsfull %>% mutate(newclub2 = fct_reorder(newclub2, Points))
+statsfull <- statsfull %>% mutate(club = fct_reorder(club, Points))
+
+
 
 ggplot(data = statsfull, aes(x = value22, y = Points, colour = Conference)) +
   geom_point() +
@@ -237,6 +239,8 @@ ggplot(data = statsfull, aes(x = value22, y = Points, colour = Conference)) +
 
 ggplot(data = value_df, aes(x = value22)) +
   geom_dotplot()
+
+# value_df <- value_df %>% mutate(value22 = as.numeric(value22))
 ```
 
 ```{r}
@@ -244,7 +248,7 @@ library(rvest)
 library(tidyverse)
 
 library(readr)
-xgoals_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_teams_2022-04-04.csv")
+xgoals_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_teams_2022-04-17.csv")
 xgoals_df <- xgoals_df %>% select(-1, -3)
 
 xgoals_df <- xgoals_df %>% rename("club" = Team)
@@ -292,9 +296,53 @@ ggplot(data = xgoals_df, aes(x = club, y = GF)) +
   coord_flip()
 ```
 
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+goalie_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_goalkeepers_2022-04-17.csv")
+
+goalie_df <- goalie_df %>% rename("club" = Team)
+
+goalie_df <- goalie_df %>% mutate(club = fct_recode(club,
+                                                    `Philadelphia Union` = "PHI",
+                                                    `Real Salt Lake` = "RSL",
+                                                    `New York Red Bulls` = "NYRB",
+                                                    `Atlanta United FC` = "ATL",
+                                                    `Chicago Fire FC` = "CHI",
+                                                    `LA Galaxy` = "LAG",
+                                                    `Columbus Crew` = "CLB",
+                                                    `Orlando City SC` = "ORL",
+                                                    `Austin FC` = "ATX",
+                                                    `FC Dallas` = "FCD",
+                                                    `Colorado Rapids` = "COL",
+                                                    `Houston Dynamo FC` = "HOU",
+                                                    `Minnesota United FC` = "MIN",
+                                                    `Toronto FC` = "TOR",
+                                                    `Seattle Sounders FC` = "SEA",
+                                                    `Nashville SC` = "NSH",
+                                                    `D.C. United` = "DCU",
+                                                    `Charlotte FC` = "CLT",
+                                                    `FC Cincinnati` = "CIN",
+                                                    `Sporting Kansas City` = "SKC",
+                                                    `Portland Timbers` = "POR",
+                                                    `New York City FC` = "NYC",
+                                                    `New England Revolution` = "NER",
+                                                    `CF Montréal` = "MTL",
+                                                    `Vancouver Whitecaps` = "VAN",
+                                                    `San Jose Earthquakes` = "SJE",
+                                                    `Inter Miami CF` = "MIA"))
+
+ggplot(data = goalie_df, aes(x = `Shots Faced`, y = `Goals Conceded`)) +
+  geom_point()
+```
+
 ## Joining Data Sets
 ```{r}
-statsfull <- inner_join(statsfull, value_df, by = c("newclub2" = "club"))
-statsfull <- inner_join(statsfull, xgoals_df, by = c("newclub2" = "club"))
+statsfull <- inner_join(statsfull, value_df, by = c("club" = "club"))
+statsfull <- inner_join(statsfull, xgoals_df, by = c("club" = "club"))
+
+statsfull <- statsfull %>% mutate(value22 = parse_number(value22))
 ```
 

@@ -41,3 +41,7 @@ I worked on formatting the conference table so that the user input club will be 
 ## April 6 End of Class
 
 I used a case_when statement to have the conferences stay set instead of manually coding them.I am still working on the highlighting idea, and am having troubles using reactive values.
+
+## April 18 Beginning of Class
+
+I fixed some more of the labels on the club value plots. I added a new tab with goals for compared to club value, to see if the money spent on attackers and goal scorers is paying off for clubs like Atlanta and LAFC. On the xPoints and xGF plots I fixed the legend so that it says what each color means. I am trying to add some goalkeeper stats that I found, I got the data to read in, I just need to find out which plot I want to make since it is individual keepers instead of club data. 
