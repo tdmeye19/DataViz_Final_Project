@@ -3,6 +3,7 @@ library(shiny)
 library(ggrepel)
 library(zoo)
 library(shinythemes)
+library(shinydashboard)
 
 # install.package('remotes')
 # remotes::install_github('coolbutuseless/emphatic')
@@ -30,7 +31,8 @@ ui <- fluidPage(
                 tabPanel("Club Value & Goals For", plotOutput("valuegfplot")),
                 tabPanel("Expected Points", plotOutput("xpointsplot")),
                 tabPanel("Expected Goals", plotOutput("xgoalsplot")),
-                tabPanel("Keeper Statistics", plotOutput("keeperplot")))
+                tabPanel("Keeper Statistics", plotOutput("keeperplot"), 
+                         plotOutput("keeperbox")))
     
   )
   )
@@ -174,21 +176,24 @@ server <- function(input, output, session) {
   })
   
   keeperplot <- reactive({
-    ggplot(data = goalie_df, aes(x = `Shots Faced`, y = `Goals Conceded`)) +
+    ggplot(data = goalie_df, aes(x = `xG`, y = `Goals Conceded`)) +
       geom_point() +
       scale_colour_brewer(palette = "Dark2") +
-      geom_label_repel(data = keeper_sub(), aes(x = `Shots Faced`, y = `Goals Conceded`,
+      geom_label_repel(data = keeper_sub(), aes(x = `xG`, y = `Goals Conceded`,
                                                 label = Player)) +
       geom_point(data = keeper_sub(), size = 6, shape = 1) +
-      labs(title = "Shots Faced Compared to Goals Conceded",
+      labs(title = "Expected Goals Compared to Goals Conceded",
+           subtitle = "Red Line is Allowing the Expected Number of Goals, 
+           Keepers Below the Line are Letting in Less Shots than Expected",
            caption = "Data Source: https://app.americansocceranalysis.com/#!/mls/xgoals/goalkeepers",
-           x = "Shots Faced",
+           x = "Expected Goals",
            y = "Goals Conceded") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text.x = element_text(size = 14),
             axis.text.y = element_text(size = 14)) +
-      theme_bw()
+      theme_bw() +
+      geom_abline(intercept = 0, slope = 1, colour = "red")
   })
   
   output$pointsplot <- renderPlot(
@@ -225,6 +230,11 @@ server <- function(input, output, session) {
   
   output$keeperplot <- renderPlot(
     keeperplot()
+  )
+  
+  output$keeperbox <- renderPlot(
+    ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Conference)) +
+      geom_boxplot() + coord_flip() + theme_bw()
   )
 }
 

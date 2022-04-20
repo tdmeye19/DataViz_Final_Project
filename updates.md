@@ -53,3 +53,7 @@ I fixed the axis text so that it was larger, along with fixing the size of the p
 ## April 20 Beginning of Class
 
 I changed the theme of the app, along with the themes of the other plots in order to make them easier to see with the new app theme. I fixed some of the variables, such as GP, so that it would be easier for a non-soccer fan to understand that it meant "Games Played". I just need to figure out if adding lines to plots to show averages would make sense, and where those lines would go for each plot.
+
+## April 20 End of Class
+
+I changed the keeper stats plot so that it instead shows goals conceded with expected goals. I added a line to the plot that shows who is under-performing or over-performing their expected goals value. I added a boxplot to show which conference's keeper are facing more shots, and now I just need to figure out how to format a tab with more than one plot output.

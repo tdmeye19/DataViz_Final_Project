@@ -341,6 +341,45 @@ ggplot(data = goalie_df, aes(x = `Goals Conceded`, y = `Shots Faced`)) +
   theme(axis.title.x = element_text(size = 14),
         axis.title.y = element_text(size = 14),
         axis.text = element_text(size = 14))
+
+goalie_df <- goalie_df %>% mutate(Conference = 0)
+
+goalie_df <- goalie_df %>% mutate(Conference = 
+                 case_when(club == "Philadelphia Union" ~ 0,
+                           club == "LAFC" ~ 1,
+                           club == "Real Salt Lake" ~ 1,
+                           club == "New York Red Bulls" ~ 0,
+                           club == "Atlanta United FC" ~ 0,
+                           club == "Chicago Fire FC" ~ 0,
+                           club == "LA Galaxy" ~ 1,
+                           club == "Columbus Crew" ~ 0,
+                           club == "Orlando City SC" ~ 0,
+                           club == "Austin FC" ~ 1,
+                           club == "FC Dallas" ~ 1,
+                           club == "Colorado Rapids" ~ 1,
+                           club == "Houston Dynamo FC" ~ 1,
+                           club == "Minnesota United FC" ~ 1,
+                           club == "Toronto FC" ~ 0,
+                           club == "Seattle Sounders FC" ~ 1,
+                           club == "Nashville SC" ~ 1,
+                           club == "D.C. United" ~ 0,
+                           club == "Charlotte FC" ~ 0,
+                           club == "FC Cincinnati" ~ 0,
+                           club == "Sporting Kansas City" ~ 1,
+                           club == "Portland Timbers" ~ 1,
+                           club == "New York City FC" ~ 0,
+                           club == "New England Revolution" ~ 0,
+                           club == "CF Montréal" ~ 0,
+                           club == "Vancouver Whitecaps" ~ 1,
+                           club == "San Jose Earthquakes" ~ 1,
+                           club == "Inter Miami CF" ~ 0))
+  
+goalie_df <- goalie_df %>% mutate(Conference = if_else(Conference == 0,
+                                            true = "East",
+                                            false = "West"))
+
+ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Conference)) +
+  geom_boxplot() + coord_flip() + theme_bw()
 ```
 
 ## Joining Data Sets
