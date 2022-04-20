@@ -28,7 +28,7 @@ statsfull <- bind_cols(test1, test2)
 
 #test1 <- test1 %>% slice(-1, -15)
 
-statsfull <- statsfull %>% rename("club" = X1...1, "GP" = X1...2, 
+statsfull <- statsfull %>% rename("club" = X1...1, "Games Played" = X1...2, 
                                       "Wins" = X2 , "Draws" = X3 ,
                                       "Losses" = X4 , "Goals For" = X5,
                                       "Goals Against" = X6, "Goal Differential" = X7,
@@ -75,13 +75,13 @@ statsfull <- statsfull %>%
 
 #statsfull <- statsfull %>% select(-club, -newclub)
 
-statsfull <- statsfull %>% select(Seed, club, Points, GP, everything())
+statsfull <- statsfull %>% select(Seed, club, Points, `Games Played`, everything())
 
 statsfull$Points
 
 statsfull <- statsfull %>% mutate(Points = as.integer(Points),
                                   `Goal Differential` = as.integer(`Goal Differential`),
-                                  GP = as.integer(GP),
+                                  `Games Played` = as.integer(`Games Played`),
                                   Wins = as.integer(Wins),
                                   Draws = as.integer(Draws),
                                   Losses = as.integer(Losses),
@@ -91,7 +91,7 @@ statsfull <- statsfull %>% mutate(Points = as.integer(Points),
 
 statsfull <- statsfull %>% arrange(desc(Points)) %>%
   mutate(club = fct_reorder(club, Points),
-         PPG = Points / GP) 
+         PPG = Points / `Games Played`) 
 
 statsfull <- statsfull %>% mutate(Conference = 0)
 
@@ -146,6 +146,8 @@ ggplot(data = statsfull, aes(x = `Goals For`, y = Points, colour = Conference)) 
 
 ggplot(data = statsfull, aes(x = PPG, y = Seed, colour = Conference)) +
   geom_point()
+
+statsfull <- statsfull %>% arrange(desc(Points))
 ```
 
 ```{r}

@@ -48,4 +48,8 @@ I fixed some more of the labels on the club value plots. I added a new tab with 
 
 ## April 18 End of Class
 
-I fixed the axis text so that it was larger, along with fixing the size of the points. Viewing the app in a seperate window made the texts and points much smaller, but now they are readable. I added another tab for the goalie data with a plot, I am going to try and add a line or some visual to the data that shows the average or what is ideal for that stat.
+I fixed the axis text so that it was larger, along with fixing the size of the points. Viewing the app in a separate window made the texts and points much smaller, but now they are readable. I added another tab for the goalie data with a plot, I am going to try and add a line or some visual to the data that shows the average or what is ideal for that stat.
+
+## April 20 Beginning of Class
+
+I changed the theme of the app, along with the themes of the other plots in order to make them easier to see with the new app theme. I fixed some of the variables, such as GP, so that it would be easier for a non-soccer fan to understand that it meant "Games Played". I just need to figure out if adding lines to plots to show averages would make sense, and where those lines would go for each plot.

@@ -2,11 +2,13 @@ library(tidyverse)
 library(shiny)
 library(ggrepel)
 library(zoo)
-library(emphatic)
+library(shinythemes)
+
 # install.package('remotes')
 # remotes::install_github('coolbutuseless/emphatic')
 
 ui <- fluidPage(
+  theme = shinytheme(theme = "superhero"),
   titlePanel("MLS 2022 Season Statistics"),
   
   sidebarLayout(
@@ -86,7 +88,8 @@ server <- function(input, output, session) {
             y = "Goal Differential") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text = element_text(size = 14))
+            axis.text = element_text(size = 14)) +
+      theme_bw()
   })
   
   valueplot <- reactive({
@@ -103,7 +106,8 @@ server <- function(input, output, session) {
            y = "Points") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text = element_text(size = 14))
+            axis.text = element_text(size = 14)) +
+      theme_bw()
   })
   
   valuegfplot <- reactive({
@@ -120,7 +124,8 @@ server <- function(input, output, session) {
            y = "Goals For") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text = element_text(size = 14))
+            axis.text = element_text(size = 14)) +
+        theme_bw()
   })
   
   xpointsplot <- reactive({
@@ -142,7 +147,8 @@ server <- function(input, output, session) {
            colour = "Statistic") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text.x = element_text(size = 14))
+            axis.text.x = element_text(size = 14)) +
+      theme_bw()
   })
   
   xgoalsplot <- reactive({
@@ -163,7 +169,8 @@ server <- function(input, output, session) {
            colour = "Statistic") +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text.x = element_text(size = 14))
+            axis.text.x = element_text(size = 14)) +
+      theme_bw()
   })
   
   keeperplot <- reactive({
@@ -180,7 +187,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text.x = element_text(size = 14),
-            axis.text.y = element_text(size = 14))
+            axis.text.y = element_text(size = 14)) +
+      theme_bw()
   })
   
   output$pointsplot <- renderPlot(
