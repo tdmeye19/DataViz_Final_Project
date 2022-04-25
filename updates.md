@@ -57,3 +57,7 @@ I changed the theme of the app, along with the themes of the other plots in orde
 ## April 20 End of Class
 
 I changed the keeper stats plot so that it instead shows goals conceded with expected goals. I added a line to the plot that shows who is under-performing or over-performing their expected goals value. I added a boxplot to show which conference's keeper are facing more shots, and now I just need to figure out how to format a tab with more than one plot output.
+
+## April 25 Beginning of Class
+
+I added some horizontal lines for where the Goal Differential was 0, however ran into some issues when trying to add a line where the mean club value was. Also, I am trying to have two plots be side-by-side in the same tab, however, I am having an issue with commas and parentheses that I cannot figure out.

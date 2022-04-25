@@ -8,6 +8,8 @@ library(shinydashboard)
 # install.package('remotes')
 # remotes::install_github('coolbutuseless/emphatic')
 
+
+
 ui <- fluidPage(
   theme = shinytheme(theme = "superhero"),
   titlePanel("MLS 2022 Season Statistics"),
@@ -31,12 +33,10 @@ ui <- fluidPage(
                 tabPanel("Club Value & Goals For", plotOutput("valuegfplot")),
                 tabPanel("Expected Points", plotOutput("xpointsplot")),
                 tabPanel("Expected Goals", plotOutput("xgoalsplot")),
-                tabPanel("Keeper Statistics", plotOutput("keeperplot"), 
-                         plotOutput("keeperbox")))
-    
-  )
-  )
-)
+                tabPanel("Keeper Statistics", fluidRow(12,
+                                                       column(6, plotOutput("keeperplot")),
+                                                       column(6, plotOutput("keeperbox")))
+)))
 
 
 server <- function(input, output, session) {
@@ -91,7 +91,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-      theme_bw()
+      theme_bw() +
+      geom_hline(yintercept = 0, linetype = "dashed")
   })
   
   valueplot <- reactive({
@@ -109,7 +110,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-      theme_bw()
+      theme_bw() +
+      geom_hline(xintercept = mean(x))
   })
   
   valuegfplot <- reactive({
