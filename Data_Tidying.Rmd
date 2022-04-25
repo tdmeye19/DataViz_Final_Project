@@ -243,6 +243,8 @@ ggplot(data = value_df, aes(x = value22)) +
   geom_dotplot()
 
 # value_df <- value_df %>% mutate(value22 = as.numeric(value22))
+
+statsfull %>% mean(value22)
 ```
 
 ```{r}
@@ -389,7 +391,8 @@ statsfull <- inner_join(statsfull, xgoals_df, by = c("club" = "club"))
 
 # gets rid of the dollar sign
 statsfull <- statsfull %>% mutate(value22 = parse_number(value22))
-
+statsfull %>% summarise(totalvalue = sum(value22),
+                        meanvalue = mean(value22))
 
 ```
 

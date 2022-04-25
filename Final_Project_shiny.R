@@ -25,18 +25,23 @@ ui <- fluidPage(
                      selected = NULL)),
   mainPanel(
     tabsetPanel(type = "tabs",
-                tabPanel("Conference Table", tableOutput("conftable")),
-                tabPanel("General Statistics", plotOutput("pointsplot")),
-                tabPanel("Goal Leaders", tableOutput("goalstable")),
-                tabPanel("Assist Leaders", tableOutput("assiststable")),
-                tabPanel("Club Value & Points", plotOutput("valueplot")),
-                tabPanel("Club Value & Goals For", plotOutput("valuegfplot")),
+                tabPanel("Conference Table", a(href ="https://www.espn.com/soccer/table/_/league/usa.1", "MLS Standings"),
+                         tableOutput("conftable")),
+                tabPanel("General Statistics", a(href ="https://www.espn.com/soccer/table/_/league/usa.1", "MLS Standings"),
+                         plotOutput("pointsplot")),
+                tabPanel("Goal Leaders", a(href = "https://www.espn.com/soccer/stats/_/league/usa.1", "Scoring Statistics"),
+                         tableOutput("goalstable")),
+                tabPanel("Assist Leaders", a(href = "https://www.espn.com/soccer/stats/_/league/usa.1", "Scoring Statistics"),
+                         tableOutput("assiststable")),
+                tabPanel("Club Value & Points", a(href = "https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1/plus/?stichtag=2021-03-15", "TransferMarkt"),
+                         plotOutput("valueplot")),
+                tabPanel("Club Value & Goals For", a(href = "https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1/plus/?stichtag=2021-03-15", "TransferMarkt"),
+                         plotOutput("valuegfplot")),
                 tabPanel("Expected Points", plotOutput("xpointsplot")),
                 tabPanel("Expected Goals", plotOutput("xgoalsplot")),
-                tabPanel("Keeper Statistics", fluidRow(12,
-                                                       column(6, plotOutput("keeperplot")),
-                                                       column(6, plotOutput("keeperbox")))
-)))
+                tabPanel("Keeper Statistics", fluidRow(column(6, plotOutput("keeperplot")),
+                                                       column(6, plotOutput("keeperbox"))))
+                ))))
 
 
 server <- function(input, output, session) {
@@ -86,12 +91,13 @@ server <- function(input, output, session) {
       geom_point(data = stats_sub(), size = 6, shape = 1) +
       scale_colour_brewer(palette = "Dark2") +
       labs(title = "Points Comparison to Goal Differential",
+           subtitle = "Goal Differential = Goals For - Goals Against",
             x = "Points",
             y = "Goal Differential") +
-      theme(axis.title.x = element_text(size = 14),
-            axis.title.y = element_text(size = 14),
-            axis.text = element_text(size = 14)) +
-      theme_bw() +
+      theme(axis.title.x = element_text(size = 18),
+            axis.title.y = element_text(size = 18),
+            axis.text = element_text(size = 18)) +
+      #theme_bw() +
       geom_hline(yintercept = 0, linetype = "dashed")
   })
   
@@ -110,8 +116,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-      theme_bw() 
-      #geom_hline(xintercept = mean(x))
+      theme_bw() +
+      geom_vline(xintercept = 39.3, linetype = "dashed")
   })
   
   valuegfplot <- reactive({
@@ -129,7 +135,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-        theme_bw()
+        theme_bw() +
+      geom_vline(xintercept = 39.3, linetype = "dashed")
   })
   
   xpointsplot <- reactive({
@@ -185,8 +192,7 @@ server <- function(input, output, session) {
                                                 label = Player)) +
       geom_point(data = keeper_sub(), size = 6, shape = 1) +
       labs(title = "Expected Goals Compared to Goals Conceded",
-           subtitle = "Red Line is Allowing the Expected Number of Goals, 
-           Keepers Below the Line are Letting in Less Shots than Expected",
+           subtitle = "Red Line is Allowing the Expected Number of Goals",
            caption = "Data Source: https://app.americansocceranalysis.com/#!/mls/xgoals/goalkeepers",
            x = "Expected Goals",
            y = "Goals Conceded") +
@@ -236,7 +242,12 @@ server <- function(input, output, session) {
   
   output$keeperbox <- renderPlot(
     ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Conference)) +
-      geom_boxplot() + coord_flip() + theme_bw()
+      geom_boxplot() + coord_flip() + theme_bw() +
+      scale_colour_brewer(palette = "Dark2") +
+      theme(axis.title.x = element_text(size = 14),
+            axis.title.y = element_text(size = 14),
+            axis.text.x = element_text(size = 14),
+            axis.text.y = element_text(size = 14))
   )
 }
 

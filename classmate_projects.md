@@ -26,3 +26,7 @@ Charlie Reinhardt: He is creating an R package that scrapes hockey data from the
 
 Shane Hauck: He is creating a Shiny app with data from the Premier League. He had a problem with merging data sets where the names for each of the players did not line up, so he had to manually recode all of them. He is now working on possibly comparing players stats in terms of 90 minutes or one game.
 
+## April 25
+
+Grace Wysocki: She is creating a blogdown for data from California relating to cities and chemical levels. She has a leaflet that shows a subset of the data, and gives population and levels of the chemical. She wants to create a map, but is struggling with those steps.
+
