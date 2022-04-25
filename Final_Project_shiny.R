@@ -110,8 +110,8 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-      theme_bw() +
-      geom_hline(xintercept = mean(x))
+      theme_bw() 
+      #geom_hline(xintercept = mean(x))
   })
   
   valuegfplot <- reactive({

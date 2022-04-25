@@ -60,4 +60,4 @@ I changed the keeper stats plot so that it instead shows goals conceded with exp
 
 ## April 25 Beginning of Class
 
-I added some horizontal lines for where the Goal Differential was 0, however ran into some issues when trying to add a line where the mean club value was. Also, I am trying to have two plots be side-by-side in the same tab, however, I am having an issue with commas and parentheses that I cannot figure out.
+I added some horizontal lines for where the Goal Differential was 0, however ran into some issues when trying to add a line where the mean club value was. Also, I am trying to have two plots be side-by-side in the same tab, however, I am having an issue with commas and parentheses that I cannot figure out. Also, I want to add text that somewhat describes whether a club is over/under-performing compared to the average (if that makes sense).
