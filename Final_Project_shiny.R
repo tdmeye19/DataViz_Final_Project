@@ -43,7 +43,8 @@ ui <- fluidPage(
                                              plotOutput("xgoalsplot")),
                 tabPanel("Keeper Statistics", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/goalkeepers", "American Soccer Analysis"), 
                                                 fluidRow(column(6, plotOutput("keeperplot")),
-                                                       column(6, plotOutput("keeperbox"))))
+                                                       column(6, plotOutput("keeperbox")))),
+                tabPanel("Player Expected Goals", plotOutput("playerplot"))# , hover = "plothover"))
                 ))))
 
 
@@ -62,6 +63,10 @@ server <- function(input, output, session) {
   
   keeper_sub <- reactive({
     goalie_df %>% filter(club == input$clubchoice)
+  })
+  
+  player_sub <- reactive({
+    player_df %>% filter(club == input$clubchoice)
   })
   
   club_sub <- reactive({
@@ -86,22 +91,21 @@ server <- function(input, output, session) {
   })
   
   pointsplot <- reactive({
-    ggplot(data = statsfull, aes(x = Points, y = `Goal Differential`,
+    ggplot(data = statsfull, aes(x = Points, y = `Goals For`,
                                  colour = Conference)) +
       geom_point(size = 4) +
       coord_flip() +
       geom_label_repel(data = stats_sub(), aes(label = input$clubchoice)) +
       geom_point(data = stats_sub(), size = 6, shape = 1) +
+      geom_smooth(method = "lm", se = FALSE) +
       scale_colour_brewer(palette = "Dark2") +
-      labs(title = "Points Comparison to Goal Differential",
-           subtitle = "Goal Differential = Goals For - Goals Against",
+      labs(title = "Points Comparison to Goals For",
             x = "Points",
-            y = "Goal Differential") +
+            y = "Goals For") +
       theme_bw() +
       theme(axis.title.x = element_text(size = 18),
             axis.title.y = element_text(size = 18),
-            axis.text = element_text(size = 18)) +
-      geom_hline(yintercept = 0, linetype = "dashed")
+            axis.text = element_text(size = 18)) 
   })
   
   valueplot <- reactive({
@@ -113,7 +117,6 @@ server <- function(input, output, session) {
       geom_point(data = stats_sub(), size = 6, shape = 1) +
       scale_colour_brewer(palette = "Dark2") +
       labs(title = "Club Value Compared to Points",
-           caption = "Data Source: https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1",
            x = "Club Value (in millions of dollars)",
            y = "Points") +
       theme_bw() +
@@ -132,7 +135,6 @@ server <- function(input, output, session) {
       geom_point(data = stats_sub(), size = 6, shape = 1) +
       scale_colour_brewer(palette = "Dark2") +
       labs(title = "Club Value Compared to Goals For",
-           caption = "Data Source: https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1",
            x = "Club Value (in millions of dollars)",
            y = "Goals For") +
       theme_bw() +
@@ -156,7 +158,6 @@ server <- function(input, output, session) {
       coord_flip() +
       scale_colour_brewer(palette = "Dark2") +
       labs(title = "Expected Points Compared to Actual Points",
-           caption = "Data Source: https://app.americansocceranalysis.com/#!/mls",
            x = "Club",
            y = "Points",
            colour = "Statistic") +
@@ -179,7 +180,6 @@ server <- function(input, output, session) {
       geom_point(data = stats_sub(), aes(x = club, y = xGF, colour = "Expected Goals For")) +
       coord_flip() +
       labs(title = "Expected Goals Compared to Actual Goals",
-           caption = "Data Source: https://app.americansocceranalysis.com/#!/mls",
            x = "Club",
            y = "Goals For",
            colour = "Statistic") +
@@ -195,10 +195,9 @@ server <- function(input, output, session) {
       scale_colour_brewer(palette = "Dark2") +
       geom_label_repel(data = keeper_sub(), aes(x = `xG`, y = `Goals Conceded`,
                                                 label = Player)) +
-      geom_point(data = keeper_sub(), size = 6, shape = 1) +
+      geom_point(data = keeper_sub(), size = 4, shape = 1) +
       labs(title = "Expected Goals Compared to Goals Conceded",
            subtitle = "Red Line is Allowing the Expected Number of Goals",
-           caption = "Data Source: https://app.americansocceranalysis.com/#!/mls/xgoals/goalkeepers",
            x = "Expected Goals",
            y = "Goals Conceded") +
       theme_bw() +
@@ -206,6 +205,12 @@ server <- function(input, output, session) {
             axis.title.y = element_text(size = 14),
             axis.text.x = element_text(size = 14),
             axis.text.y = element_text(size = 14)) +
+      geom_abline(intercept = 0, slope = 1, colour = "red")
+  })
+  
+  playerplot <- reactive({
+    ggplot(data = player_sub(), aes(x = xG, y = G)) +
+      geom_point() +
       geom_abline(intercept = 0, slope = 1, colour = "red")
   })
   
@@ -254,8 +259,12 @@ server <- function(input, output, session) {
             axis.text.x = element_text(size = 14),
             axis.text.y = element_text(size = 14)) +
       labs(title = "Shots Faced in Eastern vs. Western Conference",
-           x = "Shots Faced (Total During Time Played",
+           x = "Shots Faced (Season Total)",
            y = "Conference")
+  )
+  
+  output$playerplot <- renderPlot(
+    playerplot()
   )
 }
 

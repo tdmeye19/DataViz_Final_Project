@@ -384,6 +384,90 @@ ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Confere
   geom_boxplot() + coord_flip() + theme_bw()
 ```
 
+```{r}
+library(rvest)
+library(tidyverse)
+
+player_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_players_2022-04-27.csv")
+
+player_df <- player_df %>% rename("club" = Team)
+
+player_df <- player_df %>% mutate(club = fct_recode(club,
+                                                    `Philadelphia Union` = "PHI",
+                                                    `Real Salt Lake` = "RSL",
+                                                    `New York Red Bulls` = "NYRB",
+                                                    `Atlanta United FC` = "ATL",
+                                                    `Chicago Fire FC` = "CHI",
+                                                    `LA Galaxy` = "LAG",
+                                                    `Columbus Crew` = "CLB",
+                                                    `Orlando City SC` = "ORL",
+                                                    `Austin FC` = "ATX",
+                                                    `FC Dallas` = "FCD",
+                                                    `Colorado Rapids` = "COL",
+                                                    `Houston Dynamo FC` = "HOU",
+                                                    `Minnesota United FC` = "MIN",
+                                                    `Toronto FC` = "TOR",
+                                                    `Seattle Sounders FC` = "SEA",
+                                                    `Nashville SC` = "NSH",
+                                                    `D.C. United` = "DCU",
+                                                    `Charlotte FC` = "CLT",
+                                                    `FC Cincinnati` = "CIN",
+                                                    `Sporting Kansas City` = "SKC",
+                                                    `Portland Timbers` = "POR",
+                                                    `New York City FC` = "NYC",
+                                                    `New England Revolution` = "NER",
+                                                    `CF Montréal` = "MTL",
+                                                    `Vancouver Whitecaps` = "VAN",
+                                                    `San Jose Earthquakes` = "SJE",
+                                                    `Inter Miami CF` = "MIA"))
+
+ggplot(data = player_df, aes(x = G, y = xG)) +
+  geom_point() +
+  theme(axis.title.x = element_text(size = 14),
+        axis.title.y = element_text(size = 14),
+        axis.text = element_text(size = 14))
+
+player_df <- player_df %>% mutate(Conference = 0)
+
+player_df <- player_df %>% mutate(Conference = 
+                 case_when(club == "Philadelphia Union" ~ 0,
+                           club == "LAFC" ~ 1,
+                           club == "Real Salt Lake" ~ 1,
+                           club == "New York Red Bulls" ~ 0,
+                           club == "Atlanta United FC" ~ 0,
+                           club == "Chicago Fire FC" ~ 0,
+                           club == "LA Galaxy" ~ 1,
+                           club == "Columbus Crew" ~ 0,
+                           club == "Orlando City SC" ~ 0,
+                           club == "Austin FC" ~ 1,
+                           club == "FC Dallas" ~ 1,
+                           club == "Colorado Rapids" ~ 1,
+                           club == "Houston Dynamo FC" ~ 1,
+                           club == "Minnesota United FC" ~ 1,
+                           club == "Toronto FC" ~ 0,
+                           club == "Seattle Sounders FC" ~ 1,
+                           club == "Nashville SC" ~ 1,
+                           club == "D.C. United" ~ 0,
+                           club == "Charlotte FC" ~ 0,
+                           club == "FC Cincinnati" ~ 0,
+                           club == "Sporting Kansas City" ~ 1,
+                           club == "Portland Timbers" ~ 1,
+                           club == "New York City FC" ~ 0,
+                           club == "New England Revolution" ~ 0,
+                           club == "CF Montréal" ~ 0,
+                           club == "Vancouver Whitecaps" ~ 1,
+                           club == "San Jose Earthquakes" ~ 1,
+                           club == "Inter Miami CF" ~ 0))
+  
+player_df <- player_df %>% mutate(Conference = if_else(Conference == 0,
+                                            true = "East",
+                                            false = "West"))
+
+ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Conference)) +
+  geom_boxplot() + coord_flip() + theme_bw()
+```
+
+
 ## Joining Data Sets
 ```{r}
 statsfull <- inner_join(statsfull, value_df, by = c("club" = "club"))

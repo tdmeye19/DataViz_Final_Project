@@ -69,3 +69,7 @@ I added some lines to represent the average club value. I also added links to th
 ## April 27 Beginning of Class
 
 I fixed the themes, as I needed to have theme_bw() before the theme function where I specified text size. I added the link to the american soccer analysis website app where I got the data for expected values. I am trying to figure out how to make the line more visible on the expected values plots, however changing the line size makes it very large, and I cannot get it to go smaller.
+
+## April 27 End of Class
+
+I fixed the circle on the keeper plot as it was too large. I also focused on adding player specific expected goals into a new tab. I got it to filter by the club they chose, and then I am trying to allow the user to hover over a point and it will show their name and position. I will also fix some small formatting issues to make my plot readable to someone who might not know MLS very well.

@@ -30,3 +30,7 @@ Shane Hauck: He is creating a Shiny app with data from the Premier League. He ha
 
 Grace Wysocki: She is creating a blogdown for data from California relating to cities and chemical levels. She has a leaflet that shows a subset of the data, and gives population and levels of the chemical. She wants to create a map, but is struggling with those steps.
 
+## April 27
+
+Caleb Hamblen: He is creating a Shiny app for PGA golf data, and now he is focusing on possibly comparing players expected statistics compared to what they actually scored. He also is trying to fix the formatting of some of his plots and his app in general, with one of the plots showing up in the side panel rather than the main panel.
+
