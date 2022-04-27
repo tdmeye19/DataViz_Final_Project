@@ -65,3 +65,7 @@ I added some horizontal lines for where the Goal Differential was 0, however ran
 ## April 25 End of Class
 
 I added some lines to represent the average club value. I also added links to the top of each tab, if the data was scraped, so the user can click directly on those. I am working on fixing the themes, because the theme text is changed but then overridden by theme_bw().
+
+## April 27 Beginning of Class
+
+I fixed the themes, as I needed to have theme_bw() before the theme function where I specified text size. I added the link to the american soccer analysis website app where I got the data for expected values. I am trying to figure out how to make the line more visible on the expected values plots, however changing the line size makes it very large, and I cannot get it to go smaller.

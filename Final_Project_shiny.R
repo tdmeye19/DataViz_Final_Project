@@ -37,9 +37,12 @@ ui <- fluidPage(
                          plotOutput("valueplot")),
                 tabPanel("Club Value & Goals For", a(href = "https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1/plus/?stichtag=2021-03-15", "TransferMarkt"),
                          plotOutput("valuegfplot")),
-                tabPanel("Expected Points", plotOutput("xpointsplot")),
-                tabPanel("Expected Goals", plotOutput("xgoalsplot")),
-                tabPanel("Keeper Statistics", fluidRow(column(6, plotOutput("keeperplot")),
+                tabPanel("Expected Points", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/teams", "American Soccer Analysis"),
+                         plotOutput("xpointsplot")),
+                tabPanel("Expected Goals", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/teams", "American Soccer Analysis"), 
+                                             plotOutput("xgoalsplot")),
+                tabPanel("Keeper Statistics", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/goalkeepers", "American Soccer Analysis"), 
+                                                fluidRow(column(6, plotOutput("keeperplot")),
                                                        column(6, plotOutput("keeperbox"))))
                 ))))
 
@@ -94,10 +97,10 @@ server <- function(input, output, session) {
            subtitle = "Goal Differential = Goals For - Goals Against",
             x = "Points",
             y = "Goal Differential") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 18),
             axis.title.y = element_text(size = 18),
             axis.text = element_text(size = 18)) +
-      #theme_bw() +
       geom_hline(yintercept = 0, linetype = "dashed")
   })
   
@@ -113,10 +116,10 @@ server <- function(input, output, session) {
            caption = "Data Source: https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1",
            x = "Club Value (in millions of dollars)",
            y = "Points") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-      theme_bw() +
       geom_vline(xintercept = 39.3, linetype = "dashed")
   })
   
@@ -132,10 +135,10 @@ server <- function(input, output, session) {
            caption = "Data Source: https://www.transfermarkt.us/major-league-soccer/marktwerteverein/wettbewerb/MLS1",
            x = "Club Value (in millions of dollars)",
            y = "Goals For") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text = element_text(size = 14)) +
-        theme_bw() +
       geom_vline(xintercept = 39.3, linetype = "dashed")
   })
   
@@ -147,7 +150,8 @@ server <- function(input, output, session) {
       geom_segment(data = stats_sub(), aes(x = input$clubchoice, 
                                            xend = input$clubchoice, y = 0, 
                                            yend = Pts,
-                                           colour = "Actual Points")) +
+                                           colour = "Actual Points"
+                                           )) +
       geom_point(data = stats_sub(), aes(x = club, y = xPts, colour = "Expected Points")) +
       coord_flip() +
       scale_colour_brewer(palette = "Dark2") +
@@ -156,10 +160,11 @@ server <- function(input, output, session) {
            x = "Club",
            y = "Points",
            colour = "Statistic") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text.x = element_text(size = 14)) +
-      theme_bw()
+            axis.text.x = element_text(size = 14))
+      
   })
   
   xgoalsplot <- reactive({
@@ -178,10 +183,10 @@ server <- function(input, output, session) {
            x = "Club",
            y = "Goals For",
            colour = "Statistic") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
-            axis.text.x = element_text(size = 14)) +
-      theme_bw()
+            axis.text.x = element_text(size = 14))
   })
   
   keeperplot <- reactive({
@@ -196,11 +201,11 @@ server <- function(input, output, session) {
            caption = "Data Source: https://app.americansocceranalysis.com/#!/mls/xgoals/goalkeepers",
            x = "Expected Goals",
            y = "Goals Conceded") +
+      theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text.x = element_text(size = 14),
             axis.text.y = element_text(size = 14)) +
-      theme_bw() +
       geom_abline(intercept = 0, slope = 1, colour = "red")
   })
   
@@ -247,7 +252,10 @@ server <- function(input, output, session) {
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
             axis.text.x = element_text(size = 14),
-            axis.text.y = element_text(size = 14))
+            axis.text.y = element_text(size = 14)) +
+      labs(title = "Shots Faced in Eastern vs. Western Conference",
+           x = "Shots Faced (Total During Time Played",
+           y = "Conference")
   )
 }
 
