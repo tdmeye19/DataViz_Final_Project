@@ -4,6 +4,7 @@ library(ggrepel)
 library(zoo)
 library(shinythemes)
 library(shinydashboard)
+library(ggthemes)
 
 # install.package('remotes')
 # remotes::install_github('coolbutuseless/emphatic')
@@ -44,9 +45,10 @@ ui <- fluidPage(
                 tabPanel("Keeper Statistics", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/goalkeepers", "American Soccer Analysis"), 
                                                 fluidRow(column(6, plotOutput("keeperplot")),
                                                        column(6, plotOutput("keeperbox")))),
-                tabPanel("Player Expected Goals", plotOutput("playerplot", hover = "plothover")), 
-                verbatimTextOutput("playerinfo")))
-                ))
+                tabPanel("Player Expected Goals", plotOutput("playerplot"))#, hover = "plothover",
+                # verbatimTextOutput("playerinfo"))
+                ))))
+                
 
 
 server <- function(input, output, session) {
@@ -212,10 +214,13 @@ server <- function(input, output, session) {
   playerplot <- reactive({
     ggplot(data = player_sub(), aes(x = xG, y = G)) +
       geom_point() +
+      scale_colour_brewer(palette = "Dark2") +
+      geom_label_repel(data = player_sub(), aes(x = `xG`, y = G,
+                                                label = Player, colour = Position)) +
       geom_abline(intercept = 0, slope = 1, colour = "red") +
       labs(title = "Player Specific Expected vs Actual Goals",
            x = "Expected Goals",
-           y = "Actual Goals Scored")
+           y = "Actual Goals Scored") +
       theme_bw() +
       theme(axis.title.x = element_text(size = 14),
             axis.title.y = element_text(size = 14),
@@ -276,14 +281,15 @@ server <- function(input, output, session) {
     playerplot()
   )
   
-  output$playerinfo <- renderText({
-    player_str <- function(e) {
-      if(is.null(e)) return("NULL\n")
-      paste0("Player = ", player_df$Player, "Position = ", player_df$Position)
-    }
-    paste0(
-      "hover: ", player_str(input$plothover)
-    )
-})}
+  # output$playerinfo <- renderText({
+  #   player_str <- function(e) {
+  #     if(is.null(e)) return("NULL\n")
+  #     paste0("Player = ", player_df$Player, "Position = ", player_df$Position)
+  #   }
+  #   paste0(
+  #     "Player =", player_str(input$plothover), "Position = ", player_df$Position
+  #   )
+  # })
+  }
 
 shinyApp(ui, server)

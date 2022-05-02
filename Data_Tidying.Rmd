@@ -252,7 +252,7 @@ library(rvest)
 library(tidyverse)
 
 library(readr)
-xgoals_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_teams_2022-04-17.csv")
+xgoals_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_teams_2022-05-02.csv")
 xgoals_df <- xgoals_df %>% select(-1, -3)
 
 xgoals_df <- xgoals_df %>% rename("club" = Team)
@@ -305,7 +305,7 @@ ggplot(data = xgoals_df, aes(x = club, y = GF)) +
 library(rvest)
 library(tidyverse)
 
-goalie_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_goalkeepers_2022-04-17.csv")
+goalie_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_goalkeepers_2022-05-02.csv")
 
 goalie_df <- goalie_df %>% rename("club" = Team)
 
@@ -388,7 +388,7 @@ ggplot(data = goalie_df, aes(x = `Shots Faced`, y = Conference, colour = Confere
 library(rvest)
 library(tidyverse)
 
-player_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_players_2022-04-27.csv")
+player_df <- read_csv("~/Downloads/american_soccer_analysis_mls_xgoals_players_2022-05-02.csv")
 
 player_df <- player_df %>% rename("club" = Team)
 

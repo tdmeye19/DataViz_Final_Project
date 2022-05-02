@@ -77,3 +77,7 @@ I fixed the circle on the keeper plot as it was too large. I also focused on add
 ## May 2 Beginning of Class
 
 I added the labels for the player specific expected goals plot. I tried to add the hover option, but now the playerplot is not in the tab, and I am not sure where I went wrong. I need to figure out how to get that back, while also seeing if the hover option is working or not.
+
+## May 2 End of Class
+
+I tried getting the hover option on the plot, but opted for a geom_label instead. I also colored by position, so you can see if a team's forwards are scoring, or if more players from the midfield or defense are over-performing their expected values. I got some good input from everyone else, and have my introduction to the data set ready for presenting on Wednesday.
