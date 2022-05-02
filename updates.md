@@ -73,3 +73,7 @@ I fixed the themes, as I needed to have theme_bw() before the theme function whe
 ## April 27 End of Class
 
 I fixed the circle on the keeper plot as it was too large. I also focused on adding player specific expected goals into a new tab. I got it to filter by the club they chose, and then I am trying to allow the user to hover over a point and it will show their name and position. I will also fix some small formatting issues to make my plot readable to someone who might not know MLS very well.
+
+## May 2 Beginning of Class
+
+I added the labels for the player specific expected goals plot. I tried to add the hover option, but now the playerplot is not in the tab, and I am not sure where I went wrong. I need to figure out how to get that back, while also seeing if the hover option is working or not.

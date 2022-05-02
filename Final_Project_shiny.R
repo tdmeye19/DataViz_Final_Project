@@ -44,8 +44,9 @@ ui <- fluidPage(
                 tabPanel("Keeper Statistics", a(href = "https://app.americansocceranalysis.com/#!/mlsnp/xgoals/goalkeepers", "American Soccer Analysis"), 
                                                 fluidRow(column(6, plotOutput("keeperplot")),
                                                        column(6, plotOutput("keeperbox")))),
-                tabPanel("Player Expected Goals", plotOutput("playerplot"))# , hover = "plothover"))
-                ))))
+                tabPanel("Player Expected Goals", plotOutput("playerplot", hover = "plothover")), 
+                verbatimTextOutput("playerinfo")))
+                ))
 
 
 server <- function(input, output, session) {
@@ -211,7 +212,15 @@ server <- function(input, output, session) {
   playerplot <- reactive({
     ggplot(data = player_sub(), aes(x = xG, y = G)) +
       geom_point() +
-      geom_abline(intercept = 0, slope = 1, colour = "red")
+      geom_abline(intercept = 0, slope = 1, colour = "red") +
+      labs(title = "Player Specific Expected vs Actual Goals",
+           x = "Expected Goals",
+           y = "Actual Goals Scored")
+      theme_bw() +
+      theme(axis.title.x = element_text(size = 14),
+            axis.title.y = element_text(size = 14),
+            axis.text.x = element_text(size = 14),
+            axis.text.y = element_text(size = 14))
   })
   
   output$pointsplot <- renderPlot(
@@ -266,6 +275,15 @@ server <- function(input, output, session) {
   output$playerplot <- renderPlot(
     playerplot()
   )
-}
+  
+  output$playerinfo <- renderText({
+    player_str <- function(e) {
+      if(is.null(e)) return("NULL\n")
+      paste0("Player = ", player_df$Player, "Position = ", player_df$Position)
+    }
+    paste0(
+      "hover: ", player_str(input$plothover)
+    )
+})}
 
 shinyApp(ui, server)
